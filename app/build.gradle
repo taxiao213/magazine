@@ -8,7 +8,7 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        flavorDimensions "company","channel"
+        flavorDimensions rootProject.ext.flavorA,rootProject.ext.flavorB
     }
     buildTypes {
         debug {
@@ -31,20 +31,20 @@ android {
     // If you need to add more flavors, consider using flavor dimensions.
     productFlavors {
         companyA{
-            dimension "company"
-            buildConfigField "String","FLAVOR_NAME","\"companyA\""
+            dimension rootProject.ext.flavorA
+//            buildConfigField "String","FLAVOR_NAME","\"companyA\""
         }
         companyB{
-            dimension "company"
-            buildConfigField "String","FLAVOR_NAME","\"companyB\""
+            dimension rootProject.ext.flavorA
+//            buildConfigField "String","FLAVOR_NAME","\"companyB\""
         }
         channelA{
-            dimension "channel"
-            buildConfigField "String","FLAVOR_NAME","\"channelA\""
+            dimension rootProject.ext.flavorB
+//            buildConfigField "String","FLAVOR_NAME","\"channelA\""
         }
         channelB{
-            dimension "channel"
-            buildConfigField "String","FLAVOR_NAME","\"channelB\""
+            dimension rootProject.ext.flavorB
+//            buildConfigField "String","FLAVOR_NAME","\"channelB\""
         }
     }
 }

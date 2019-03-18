@@ -13,6 +13,10 @@ ext {
     runnerVersion = '1.0.1'
     espressoVersion = '3.0.2'
 
+    //打包
+    flavorA = "company"
+    flavorB = "channel"
+
     // App dependencies
     multidexVersion = '1.0.0'
     mockitoVersion = '1.9.5'

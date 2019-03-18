@@ -2,3 +2,5 @@
 Android Studio3.0 flavorDimensions多维度理解(版本差异化打包)
 https://blog.csdn.net/chen_xi_hao/article/details/80526049
 
+对比几个风味维度的BuildConfig文件里的这个FLAVOR_NAME常量，会发现总是显示第一维度company的值，
+而第二维度channel的值并不存在，所以当产生多维度的产品时，定义的一些常量总是以第一维度的配置为准
