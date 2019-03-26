@@ -3,4 +3,27 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!--系统主题色-->
+    <color name="myThemeColor">#1296DB</color>
+
+    <!--RadioButton-->
+    <color name="radio_button_normal">#BFBFBF</color>
+    <color name="radio_button_select">@color/myThemeColor</color>
+
+    <color name="grey_33">#333333</color>
+    <color name="grey_64">#646464</color>
+    <color name="grey_66">#666666</color>
+    <color name="grey_ab">#ababab</color>
+    <color name="grey_c9">#c9c9c9</color>
+    <color name="grey_db">#dbdbdb</color>
+    <color name="grey_dd">#dddddd</color>
+    <color name="grey_ef">#efefef</color>
+    <color name="grey_dc">#dcdcdc</color>
+    <color name="grey_df">#dfdfdf</color>
+    <color name="grey_e8">#e8e8e8</color>
+    <color name="grey_ee">#eeeeee</color>
+    <color name="grey_f6">#f6f6f6</color>
+    <color name="grey_f7">#f7f7f7</color>
+    <color name="grey_f8">#f8f8f8</color>
+
 </resources>

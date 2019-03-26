@@ -8,7 +8,7 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        flavorDimensions rootProject.ext.flavorA,rootProject.ext.flavorB
+        flavorDimensions rootProject.ext.flavorA
     }
     buildTypes {
         debug {
@@ -34,18 +34,6 @@ android {
             dimension rootProject.ext.flavorA
 //            buildConfigField "String","FLAVOR_NAME","\"companyA\""
         }
-        companyB{
-            dimension rootProject.ext.flavorA
-//            buildConfigField "String","FLAVOR_NAME","\"companyB\""
-        }
-        channelA{
-            dimension rootProject.ext.flavorB
-//            buildConfigField "String","FLAVOR_NAME","\"channelA\""
-        }
-        channelB{
-            dimension rootProject.ext.flavorB
-//            buildConfigField "String","FLAVOR_NAME","\"channelB\""
-        }
     }
 }
 
@@ -62,4 +50,7 @@ dependencies {
     //dagger
     implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
 }

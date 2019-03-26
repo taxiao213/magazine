@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">magazine</string>
+    <string name="app_name">杂志</string>
+    <string name="homepager_name">首页</string>
+    <string name="homecreatetask_name">文档</string>
+    <string name="homemanage_name">发现</string>
+    <string name="homepeople_name">我的</string>
 </resources>
