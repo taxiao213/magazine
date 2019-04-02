@@ -29,12 +29,12 @@ android {
 
 
     // If you need to add more flavors, consider using flavor dimensions.
-    productFlavors {
+   /* productFlavors {
         companyA{
             dimension rootProject.ext.flavorA
 //            buildConfigField "String","FLAVOR_NAME","\"companyA\""
         }
-    }
+    }*/
 }
 
 dependencies {
@@ -44,9 +44,12 @@ dependencies {
     testImplementation"junit:junit:$rootProject.junitVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    implementation "com.google.guava:guava:$rootProject.guavaVersion"
+
     //butterknife
     implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+
     //dagger
     implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
