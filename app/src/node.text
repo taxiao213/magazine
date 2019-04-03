@@ -18,8 +18,19 @@ https://www.youtube.com/watch?v=2Vnt39V0taQ
 http://haibin.me/2016/08/15/Android%E5%BC%80%E5%8F%91%E7%B3%BB%E5%88%97-%E5%B8%95%E5%85%8B%E8%83%96%E6%B0%B4%E7%85%AEDagger2/
 https://v.youku.com/v_show/id_XMTY5MTgyOTEwMA==.html?refer=shipinyunPC_operation.liuliling_bofangqi_1244000_fQZ7Fj_18101900
 
+app启动优化
+http://blog.udinic.com/2015/09/15/speed-up-your-app/
 
 dagger初始化
+
+public class MyApplication extends DaggerApplication {
+
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        return DaggerAppComponent.builder().application(this).build();
+    }
+
+}
 
 @Singleton
 @Component(modules = {AndroidSupportInjectionModule.class})
@@ -34,3 +45,23 @@ public interface AppComponent extends AndroidInjector<MyApplication> {
         AppComponent build();
     }
 }
+
+从MyApplication类开始探索。在这里AppComponent会被创建和存储。这意味着所有单例的对象的生命周期都会与Applicaiton一致
+AppComponent的实现由Dagger 2（对象可以通过builder模式被创建）生成的代码提供。在这里我们也可以放入所有的Component的依赖（module和其他components）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

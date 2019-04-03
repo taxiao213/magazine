@@ -1,0 +1,274 @@
+@Inject 注解
+DI中第一个并且是最重要的就是@Inject注解。JSR-330标准中的一部分，标记那些应该被依赖注入框架提供的依赖。
+在Dagger 2中有3种不同的方式来提供依赖
+
+构造器注入：
+@Inject使用在类的构造器上：
+public class LoginActivityPresenter {
+
+    private LoginActivity loginActivity;
+    private UserDataStore userDataStore;
+    private UserManager userManager;
+
+    @Inject
+    public LoginActivityPresenter(LoginActivity loginActivity,
+                                  UserDataStore userDataStore,
+                                  UserManager userManager) {
+        this.loginActivity = loginActivity;
+        this.userDataStore = userDataStore;
+        this.userManager = userManager;
+    }
+}
+这个例子中的局限性是我们不能给这个类中的多个构造器作@Inject注解。
+
+属性注入
+另一种选择是给指定的属性作@Inject注解：
+
+public class SplashActivity extends AppCompatActivity {
+
+    @Inject
+    LoginActivityPresenter presenter;
+    @Inject
+    AnalyticsManager analyticsManager;
+
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        getAppComponent().inject(this);
+    }
+}
+
+方法注入
+最后一种方法使用@Inject注解提供依赖的方式是在这个类的public方法中作注解：
+
+public class LoginActivityPresenter {
+
+    private LoginActivity loginActivity;
+
+    @Inject
+    public LoginActivityPresenter(LoginActivity loginActivity) {
+        this.loginActivity = loginActivity;
+    }
+
+    @Inject
+    public void enableWatches(Watches watches) {
+        watches.register(this);    //Watches instance required fully constructed LoginActivityPresenter
+    }
+}
+
+----------------------------------------------
+
+@Module 注解
+@Module是Dagger 2 API的一部分。这个注解用于标记提供依赖的类 - 多亏它Dagger才会知道某些地方需要的对象被构建。
+
+@Module
+public class GithubApiModule {
+
+    @Provides
+    @Singleton
+    OkHttpClient provideOkHttpClient() {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(60 * 1000, TimeUnit.MILLISECONDS);
+        okHttpClient.setReadTimeout(60 * 1000, TimeUnit.MILLISECONDS);
+        return okHttpClient;
+    }
+
+    @Provides
+    @Singleton
+    RestAdapter provideRestAdapter(Application application, OkHttpClient okHttpClient) {
+        RestAdapter.Builder builder = new RestAdapter.Builder();
+        builder.setClient(new OkClient(okHttpClient))
+               .setEndpoint(application.getString(R.string.endpoint));
+        return builder.build();
+    }
+}
+view rawGithubApiModule.java hosted with
+
+---------------------------------------------------------
+@Provides 注解
+这个注解用在@Module类中。@Provides会标记Module中那些返回依赖的方法
+
+@Module
+public class GithubApiModule {
+
+    @Provides   //This annotation means that method below provides dependency
+    @Singleton
+    RestAdapter provideRestAdapter(Application application, OkHttpClient okHttpClient) {
+        RestAdapter.Builder builder = new RestAdapter.Builder();
+        builder.setClient(new OkClient(okHttpClient))
+               .setEndpoint(application.getString(R.string.endpoint));
+        return builder.build();
+    }
+}
+
+--------------------------------------------------------------
+@Component 注解
+这个注解用在把一切联系在一起的接口上面。在这里我们可以定义从哪些module（或者哪些Components）中获取依赖。
+这里也可以用来定义哪些图表依赖应该公开可见（可以被注入）和哪里我们的component可以注入对象。
+@Component通常是@Module和@Inject之间的桥梁。
+
+这里有个使用了两个module的@Component例子代码，可以注入依赖到GithubClientApplication，并且标记了三个依赖公开可见：
+
+@Singleton
+@Component(
+    modules = {
+        AppModule.class,
+        GithubApiModule.class
+    }
+)
+public interface AppComponent {
+
+    void inject(GithubClientApplication githubClientApplication);
+
+    Application getApplication();
+
+    AnalyticsManager getAnalyticsManager();
+
+    UserManager getUserManager();
+}
+@Component也可以依赖其它的component，并且定义了生命周期（我会在以后的文章中讲解Scope）：
+
+@ActivityScope
+@Component(
+    modules = SplashActivityModule.class,
+    dependencies = AppComponent.class
+)
+public interface SplashActivityComponent {
+    SplashActivity inject(SplashActivity splashActivity);
+
+    SplashActivityPresenter presenter();
+}
+
+------------------------------------------------------------------------
+@Scope 注解  单例
+@Scope
+public @interface ActivityScope {
+}
+JSR-330标准的又一部分。在Dagger 2中，@Scope被用于标记自定义的scope注解。简单说它们可以类似单例地标记依赖。
+被作注解的依赖会变成单例，但是这会与component的生命周期（不是整个应用）关联。但是正如我刚才所说 - 我会在下一篇文章中深入scope。
+现在值得一提的是所有自定义scope做的是同样的事情（从代码角度）- 它们为对象保持单例。
+但是他们也会被在图表认证处理中使用，这对尽可能地捕捉图表结构问题是有帮助的。
+
+Scope
+几乎所有的项目都会用到单例 - 比如API clients，database helpers，analytics managers等。
+因为我们不需要去关心实例化（由于依赖注入），我们不应该在我们的代码中考虑关于怎么得到这些对象。
+取而代之的是@Inject注解应该提供给我们适合的实例
+在Dagger 2中，Scope机制可以使得在scope存在时保持类的单例。在实践中，这意味着被限定范围为@ApplicationScope的实例与Applicaiton对象的生命周期一致。
+@ActivityScope保证引用与Activity的生命周期一致（举个例子我们可以在这个Activity中持有的所有fragment之间分享一个任何类的单例）
+
+但是需要弄清楚的是 - Dagger 2默认并不提供@ActivityScope 或者/并且 @ApplicationScope 这些注解。这些只是最常用的自定义Scope。
+只有@Singleton scope是默认提供的（由Java自己提供）。
+---------------------------------------------------------------------------
+MapKey
+这个注解用在定义一些依赖集合（目前为止，Maps和Sets）。让例子代码自己来解释吧：
+
+定义：
+
+@MapKey(unwrapValue = true)
+@interface TestKey {
+    String value();
+}
+提供依赖：
+
+@Provides(type = Type.MAP)
+@TestKey("foo")
+String provideFooKey() {
+    return "foo value";
+}
+
+@Provides(type = Type.MAP)
+@TestKey("bar")
+String provideBarKey() {
+    return "bar value";
+}
+使用：
+
+@Inject
+Map<String, String> map;
+
+map.toString() // => „{foo=foo value, bar=bar value}”
+@MapKey注解目前只提供两种类型 - String和Enum。
+
+--------------------------------------------------
+@Qualifier
+@Qualifier注解帮助我们去为相同接口的依赖创建“tags”。想象下你需要提供两个RestAdapter对象 - 一个用于Github API，另一个用于Fackbook API。Qualifier会帮助你区分对应的一个：
+
+命名依赖：
+
+@Provides
+@Singleton
+@GithubRestAdapter  //Qualifier
+RestAdapter provideRestAdapter() {
+    return new RestAdapter.Builder()
+        .setEndpoint("https://api.github.com")
+        .build();
+}
+
+@Provides
+@Singleton
+@FacebookRestAdapter  //Qualifier
+RestAdapter provideRestAdapter() {
+    return new RestAdapter.Builder()
+        .setEndpoint("https://api.facebook.com")
+        .build();
+}
+注入依赖：
+
+@Inject
+@GithubRestAdapter
+RestAdapter githubRestAdapter;
+
+@Inject
+@FacebookRestAdapter
+RestAdapter facebookRestAdapter;
+
+-------------------------------------------------------
+成员注入的方法：
+
+SomeType getSomeType();
+Provider<SomeType> getSomeTypeProvider();
+Lazy<SomeType> getLazySomeType();
+
+-----------------------------------------------------
+在Dagger 2中，Scope的实现归结于对Components的一个正确的设置。一般情况下我们有两种方式 - 使用Subcomponent注解或者使用Components依赖。
+它们两者最大的区别就是对象图表的共享。Subcomponents可以访问它们parent的所有对象图表，而Component依赖只能访问通过Component接口暴露的对象。
+
+当然@UserScope注解是我们自己创建的：
+
+@Scope
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UserScope {
+}
+
+@UserScope
+@Subcomponent(
+        modules = {
+                UserModule.class
+        }
+)
+public interface UserComponent {
+    RepositoriesListActivityComponent plus(RepositoriesListActivityModule repositoriesListActivityModule);
+
+    RepositoryDetailsActivityComponent plus(RepositoryDetailsActivityModule repositoryDetailsActivityModule);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
