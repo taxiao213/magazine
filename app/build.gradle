@@ -8,8 +8,23 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        flavorDimensions rootProject.ext.flavorA
     }
+
+    signingConfigs {
+        release {
+            keyAlias 'magazine_release'
+            keyPassword '123456'
+            storeFile file('C:/project/android/magazine/trunk/key/release/magazine_release.jks')
+            storePassword '123456'
+        }
+        debug {
+            keyAlias 'magazine_debug'
+            keyPassword '123456'
+            storeFile file('C:/project/android/magazine/trunk/key/debug/magazine_debug.jks')
+            storePassword '123456'
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
@@ -24,22 +39,24 @@ android {
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguardTest-rules.pro'
         }
     }
-
-
+    flavorDimensions "default"
     // If you need to add more flavors, consider using flavor dimensions.
-   /* productFlavors {
-        companyA{
-            dimension rootProject.ext.flavorA
-//            buildConfigField "String","FLAVOR_NAME","\"companyA\""
+    productFlavors {
+        mock {
+            dimension "default"
+            applicationIdSuffix = ".mock"
         }
-    }*/
+        prod {
+            dimension "default"
+        }
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintVersion"
-    testImplementation"junit:junit:$rootProject.junitVersion"
+    testImplementation "junit:junit:$rootProject.junitVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
     implementation "com.google.guava:guava:$rootProject.guavaVersion"
