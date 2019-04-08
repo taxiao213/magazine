@@ -49,11 +49,24 @@ public interface AppComponent extends AndroidInjector<MyApplication> {
 从MyApplication类开始探索。在这里AppComponent会被创建和存储。这意味着所有单例的对象的生命周期都会与Applicaiton一致
 AppComponent的实现由Dagger 2（对象可以通过builder模式被创建）生成的代码提供。在这里我们也可以放入所有的Component的依赖（module和其他components）
 
+buildTypes {
+    debug {
+        minifyEnabled false
+        applicationIdSuffix ".debug"
+    }
+    custom.initWith(buildTypes.debug)
+    custom {
+        applicationIdSuffix ".custom"
+        versionNameSuffix "-customs"
+    }
+}
 
-
-
-
-
+对默认的debug构建类型进行了修改，关闭了混淆配置，添加applicationId后缀
+以debug为基础创建一个叫custom的构建类型（相当于继承了debug版本），在custom的构建类型中修改applicationId后缀，并添加了versionName的后缀
+资料
+https://www.jianshu.com/p/cce65d1352c1
+https://www.jianshu.com/p/98ee75dd49f4
+http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.BuildType.html
 
 
 
