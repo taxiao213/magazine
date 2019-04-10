@@ -65,4 +65,9 @@ ext {
 
     //bugly
     buglyVersion = 'latest.release'
+
+    //umeng
+    umengCommonVersion = '1.5.4'
+    umengUtdidVersion = '1.1.5.3'
+    umengPushVersion = '5.0.2'
 }
