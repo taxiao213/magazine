@@ -63,6 +63,30 @@ buildTypes {
 
 对默认的debug构建类型进行了修改，关闭了混淆配置，添加applicationId后缀
 以debug为基础创建一个叫custom的构建类型（相当于继承了debug版本），在custom的构建类型中修改applicationId后缀，并添加了versionName的后缀
+
+创建一个新的BuildType的步骤为：
+
+在buildTypes容器下添加一个自定义名称的元素
+调用initWith或者使用闭包进行配置点击查看BuildType的可配置属性
+
+对于每一个BuildType，Android plugin都会创建对应的“assembleBuildTypeName”任务
+对于每一个BuildType，都可以在dependencies容器中添加名为BuildTypeNameCompile的依赖配置
+
+对于每一个BuildType，Android plugin都会创建一个对应的sourceSet，默认位置为：src/BuildTypeName
+所以新建BuildType的名字不能是main、androidTest和test这三个已经被用的名字
+BuildType的代码/资源会以以下方式进行合并
+
+manifest会被合并到app的manifest文件中
+res目录下的资源文件会替换main里的资源文件
+java目录下的文件会被添加到main里的java目录中，所以不能和main里的类重名（含包名）
+
+//不同的productFlavors 依赖不同
+mockImplementation "com.hjq:xxpermissions:$rootProject.xxpermissionsVersion"
+mockImplementation files('libs/MiPush_SDK_Client_3_6_2.jar')
+
+prodImplementation "com.google.zxing:core:$rootProject.zxingCoreVersion"
+prodImplementation files('libs/zbar.jar')
+
 资料
 https://www.jianshu.com/p/cce65d1352c1
 https://www.jianshu.com/p/98ee75dd49f4
