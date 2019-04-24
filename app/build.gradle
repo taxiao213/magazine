@@ -14,13 +14,13 @@ android {
         release {
             keyAlias 'magazine_release'
             keyPassword '123456'
-            storeFile file('H:\\Software\\Android\\magazine.git\\trunk\\key\\release\\magazine_release.jks')
+            storeFile file('H:\\Software\\Android\\magazine_app\\key\\release\\magazine_release.jks')
             storePassword '123456'
         }
         debug {
             keyAlias 'magazine_debug'
             keyPassword '123456'
-            storeFile file('H:\\Software\\Android\\magazine.git\\trunk\\key\\debug\\magazine_debug.jks')
+            storeFile file('H:\\Software\\Android\\magazine_app\\key\\debug\\magazine_debug.jks')
             storePassword '123456'
         }
     }
@@ -91,4 +91,18 @@ dependencies {
     implementation "com.umeng.umsdk:utdid:$rootProject.umengUtdidVersion"
     // PushSDK
     implementation "com.umeng.umsdk:push:$rootProject.umengPushVersion"
+
+    //ijkplayer
+    // required, enough for most devices.
+    implementation "tv.danmaku.ijk.media:ijkplayer-java:$rootProject.ijkplayerVersion"
+    implementation "tv.danmaku.ijk.media:ijkplayer-armv7a:$rootProject.ijkplayerVersion"
+
+    // Other ABIs: optional
+    implementation "tv.danmaku.ijk.media:ijkplayer-armv5:$rootProject.ijkplayerVersion"
+    implementation "tv.danmaku.ijk.media:ijkplayer-arm64:$rootProject.ijkplayerVersion"
+    implementation "tv.danmaku.ijk.media:ijkplayer-x86:$rootProject.ijkplayerVersion"
+    implementation "tv.danmaku.ijk.media:ijkplayer-x86_64:$rootProject.ijkplayerVersion"
+
+    // ExoPlayer as IMediaPlayer: optional, experimental
+    implementation "tv.danmaku.ijk.media:ijkplayer-exo:$rootProject.ijkplayerVersion"
 }
