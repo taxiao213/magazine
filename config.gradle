@@ -73,4 +73,10 @@ ext {
 
     //ijkplayer
     ijkplayerVersion = '0.8.8'
+
+    //webrtc
+    webrtcVersion = '1.0.+'
+
+    //socket.io
+    socketIoVersion = '1.0.0'
 }

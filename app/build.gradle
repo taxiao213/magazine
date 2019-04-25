@@ -105,4 +105,7 @@ dependencies {
 
     // ExoPlayer as IMediaPlayer: optional, experimental
     implementation "tv.danmaku.ijk.media:ijkplayer-exo:$rootProject.ijkplayerVersion"
+
+    implementation "io.socket:socket.io-client:$rootProject.socketIoVersion"
+    implementation "org.webrtc:google-webrtc:$rootProject.webrtcVersion"
 }
