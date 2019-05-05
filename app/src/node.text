@@ -10,6 +10,9 @@ https://ifeve.com/google-guava/
 
 dagger2笔记
 https://www.jianshu.com/p/24af4c102f62
+http://codethink.me
+http://codethink.me/2015/08/06/dependency-injection-with-dagger-2/
+http://codethink.me/2015/08/01/dependency-injection-theory/
 https://juejin.im/post/58722866128fe1006b33e104
 https://proandroiddev.com/dagger-2-on-android-the-official-guidelines-you-should-be-following-2607fd6c002e
 https://www.jianshu.com/p/1d84ba23f4d2
@@ -99,7 +102,13 @@ https://www.jianshu.com/p/98ee75dd49f4
 http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.BuildType.html
 
 
+一、依赖倒置原则
+A. 高层次的模块不应该依赖于低层次的模块，他们都应该依赖于抽象。
+B. 抽象不应该依赖于具体实现，具体实现应该依赖于抽象。
 
+既然了解了依赖倒置原则，那么这里就再说一点，为什么MVP模式中，View需要使用接口，而Presenter则不需要，或者说没有必要？
+根据依赖倒置原则，高层次的模块不应该依赖于低层次的模块，他们都应该依赖于抽象
+MVP中，Presenter属于高层次模块，而View是低层次，所以View就需要实现接口了，就是这么简单……
 
 
 

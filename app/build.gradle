@@ -14,13 +14,13 @@ android {
         release {
             keyAlias 'magazine_release'
             keyPassword '123456'
-            storeFile file('H:\\Software\\Android\\magazine_app\\key\\release\\magazine_release.jks')
+            storeFile file('C:\\project\\android\\magazine\\trunk\\key\\release\\magazine_release.jks')
             storePassword '123456'
         }
         debug {
             keyAlias 'magazine_debug'
             keyPassword '123456'
-            storeFile file('H:\\Software\\Android\\magazine_app\\key\\debug\\magazine_debug.jks')
+            storeFile file('C:\\project\\android\\magazine\\trunk\\key\\debug\\magazine_debug.jks')
             storePassword '123456'
         }
     }
@@ -49,6 +49,10 @@ android {
         prod {
             dimension "default"
         }
+    }
+    compileOptions {
+        sourceCompatibility rootProject.ext.javaVersion
+        targetCompatibility rootProject.ext.javaVersion
     }
 }
 
@@ -108,4 +112,7 @@ dependencies {
 
     implementation "io.socket:socket.io-client:$rootProject.socketIoVersion"
     implementation "org.webrtc:google-webrtc:$rootProject.webrtcVersion"
+
+    // 仿微信相册
+    implementation "com.github.LuckSiege.PictureSelector:picture_library:$rootProject.pictureLibraryVersion"
 }
